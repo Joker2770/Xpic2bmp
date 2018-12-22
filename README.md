@@ -5,4 +5,4 @@ Make the picture which format is  jpg, png or else convert to bmp format and cha
 ~~~
 Xpic2bmp.exe [your picture's complete directory]
 ~~~
-You can find the logs in **C:\SPTrace\Device\*** . 
+You can find the logs in **C:\SPTrace\Device\\** . 
