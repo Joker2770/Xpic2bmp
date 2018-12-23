@@ -53,6 +53,8 @@ int main(int argc, char* argv[])
 	iretval = gb->GetBmpInfo(bmpPath, &o_picW, &o_picH);
 	printf("Éú³ÉÍ¼Æ¬¿í£º%d, ¸ß£º%d\n", o_picW, o_picH);
 
+	Sleep(5000);
+
 	return 0;
 }
 
