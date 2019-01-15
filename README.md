@@ -2,7 +2,7 @@
 Make the picture which format is  jpg, png or else convert to bmp format and change the size.
 
 # Usage
-Use mouse drag your picture to ~<Xpic2bmp.exe>~ <br>
+Use mouse drag your picture to *Xpic2bmp.exe* <br>
 
 or
 
