@@ -10,4 +10,4 @@ or
 Xpic2bmp.exe -h
 ~~~
 
-You can find the logs in **C:\SPTrace\Device\\** . 
+You can find the logs in **C:\LOG\\** . 
