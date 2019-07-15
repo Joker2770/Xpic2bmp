@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "GVar.h"
+#include "Xpic2bmp.h"
 
 static void usage(const char *program_name)
 {
@@ -73,6 +73,10 @@ int main(int argc, char* argv[])
 		int o_picW, o_picH;
 		iretval = gb->GetBmpInfo(bmpPath, &o_picW, &o_picH);
 		printf("生成图片宽：%d, 高：%d\n", o_picW, o_picH);
+		SCREEN_WIDTH = o_picW;
+		SCREEN_HEIGHT = o_picH;
+
+		ShowOnSDL(bmpPath);
 	}
 	else
 	{
@@ -118,10 +122,119 @@ int main(int argc, char* argv[])
 		int o_picW, o_picH;
 		iretval = gb->GetBmpInfo(bmpPath, &o_picW, &o_picH);
 		printf("生成图片宽：%d, 高：%d\n", o_picW, o_picH);
+		SCREEN_WIDTH = o_picW;
+		SCREEN_HEIGHT = o_picH;
+
+		ShowOnSDL(bmpPath);
 	}
 
-	Sleep(5000);
+	Sleep(3000);
 
 	return iretval;
 }
 
+void ShowOnSDL(char* TagBMPPath)
+{
+
+	// Show pic by SDL [7/15/2019 yjt95]
+	if (!init())
+	{
+		printf("Failed to initialize!\n");
+	}
+	else
+	{
+		//Load media
+		if (!loadMedia(TagBMPPath))
+		{
+			printf("Failed to load media!\n");
+		}
+		else
+		{
+			//Main loop flag
+			bool quit = false;
+
+			//Event handler
+			SDL_Event e;
+
+			//While application is running
+			while (!quit)
+			{//Handle events on queue
+				while (SDL_PollEvent(&e) != 0)
+				{
+					//User requests quit
+					if (e.type == SDL_QUIT)
+					{
+						quit = true;
+					}
+				}
+				//Apply the image
+				SDL_BlitSurface(gHelloWorld, NULL, gScreenSurface, NULL);
+
+				//Update the surface
+				SDL_UpdateWindowSurface(gWindow);
+			}
+		}
+	}
+	//Free resources and close SDL
+	close();
+}
+
+bool init()
+{
+	//Initialization flag
+	bool success = true;
+
+	//Initialize SDL
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
+		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		success = false;
+	}
+	else
+	{
+		//Create window
+		gWindow = SDL_CreateWindow("Hello World", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		if (gWindow == NULL)
+		{
+			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+			success = false;
+		}
+		else
+		{
+			//Get window surface
+			gScreenSurface = SDL_GetWindowSurface(gWindow);
+		}
+	}
+
+	return success;
+}
+
+bool loadMedia(char* sTagPath)
+{
+	//Load success flag
+	bool success = true;
+
+	//Load splash image
+	gHelloWorld = SDL_LoadBMP(sTagPath);
+	if (gHelloWorld == NULL)
+	{
+		printf("Unable to load image %s! SDL Error: %s\n", sTagPath, SDL_GetError());
+		success = false;
+	}
+
+	return success;
+}
+
+void close()
+{
+	//Deallocate surface
+	SDL_FreeSurface(gHelloWorld);
+	gHelloWorld = NULL;
+
+	//Destroy window
+	SDL_DestroyWindow(gWindow);
+	gWindow = NULL;
+
+	//Quit SDL subsystems
+	SDL_Quit();
+}
