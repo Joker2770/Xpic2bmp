@@ -6,10 +6,10 @@
 
 static void usage(const char *program_name)
 {
-    fprintf(stderr, "usage: %s \n"
-		"-h [ --help ]                         Show commandline options.\n"
-		"-s [ --resource ]                     Pointer to a source picture.\n"
-		"-v [ --version ]                      Show the program version.\n"
+    fprintf(stderr, "usage: %s	[options]\n"
+		"-h ( --help )                         Show commandline options.\n"
+		"-v ( --version )                      Show the program version.\n"
+		"-s ( --resource ) infile              Pointer to a source picture.\n"
 		,program_name);
 }
 
@@ -19,7 +19,13 @@ int main(int argc, char* argv[])
 	
 	int iretval = 0;
 
-	if (argc < 2 || stricmp(argv[1], "-h") == 0 || stricmp(argv[1], "--help") == 0) 
+	if (argc < 2)
+	{
+		usage(argv[0]);
+		Sleep(5000);
+		return iretval;
+	}
+	else if (stricmp(argv[1], "-h") == 0 || stricmp(argv[1], "--help") == 0) 
 	{
         usage(argv[0]);
         return iretval;
